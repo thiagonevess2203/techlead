@@ -1,11 +1,15 @@
 package org.serverest.controller;
 
+import com.google.gson.Gson;
 import io.restassured.http.ContentType;
 import io.restassured.response.Response;
 import org.hamcrest.Matchers;
-import org.serverest.model.ProdutoDTO;
+import org.serverest.model.*;
 import org.serverest.util.Ambiente;
 import org.serverest.util.Endpoint;
+
+import java.util.List;
+
 import static org.hamcrest.CoreMatchers.is;
 import static io.restassured.RestAssured.given;
 
@@ -46,20 +50,13 @@ public class Produto {
                 .body("message", is(mensagem));
     }
 
-    public static Response buscarPorId(ProdutoDTO produtoDTO, Integer statusCode) {
-        Response resp = given()
+    public static void buscarPorId(ProdutoDTO produtoDTO, Integer statusCode) {
+        given()
                 .pathParam("_id", produtoDTO.getId())
         .when()
                 .get(Ambiente.desenvolvimento + Endpoint.produtosId)
         .then()
-                .statusCode(statusCode)
-                .body("nome", Matchers.is(produtoDTO.getNome()))
-                .body("descricao", Matchers.is(produtoDTO.getDescricao()))
-                .extract().response();
-
-        ProdutoDTO dto = resp.getBody().as(ProdutoDTO.class);
-        System.out.println(dto.getDescricao());
-        return resp;
+                .statusCode(statusCode);
     }
 
     public static void excluir(ProdutoDTO produtoDTO, String token, Integer statusCode, String message) {
@@ -71,5 +68,18 @@ public class Produto {
         .then()
                 .statusCode(statusCode)
                 .body("message", Matchers.is(message));
+    }
+
+    public static ProdutosDTO buscarPorDescricao(Integer statusCode, String descricao) {
+        Response resp = given()
+                .when()
+                .queryParam("descricao", descricao)
+                .get(Ambiente.desenvolvimento + Endpoint.produtos)
+        .then()
+                .statusCode(statusCode)
+                .extract().response();
+
+        Gson gson = new Gson();
+        return gson.fromJson(resp.asString(), ProdutosDTO.class);
     }
 }

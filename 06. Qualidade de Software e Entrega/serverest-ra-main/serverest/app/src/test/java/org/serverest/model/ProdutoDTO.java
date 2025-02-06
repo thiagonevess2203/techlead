@@ -2,7 +2,7 @@ package org.serverest.model;
 
 public class ProdutoDTO {
 
-    private String id;
+    private String _id;
     private String nome;
     private Integer preco;
     private String descricao;
@@ -19,11 +19,11 @@ public class ProdutoDTO {
     }
 
     public String getId() {
-        return id;
+        return _id;
     }
 
-    public void setId(String id) {
-        this.id = id;
+    public void setId(String _id) {
+        this._id = _id;
     }
 
     public String getNome() {

@@ -11,4 +11,5 @@ public class Mensagem {
     public static final String registroDuplicado = "Já existe produto com esse nome";
     public static final String tokenAusente = "Token de acesso ausente, inválido, expirado ou usuário do token não existe mais";
     public static final String rotaExclusivaAdmin = "Rota exclusiva para administradores";
+    public static final String produtoNaoEncontrado = "Produto não encontrado";
 }
